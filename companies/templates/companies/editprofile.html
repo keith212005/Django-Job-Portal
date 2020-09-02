@@ -1,0 +1,256 @@
+{% extends "layouts/base.html" %}
+{% load imagefit %}
+{% load static %}
+
+{% block title %} Company Dashboard {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="/static/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="/static/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="/static/assets/plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="/static/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="/static/assets/plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="/static/assets/plugins/summernote/summernote-bs4.min.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- form start -->
+  <form action="{% url 'updateCompanyInfo' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+
+          {% if msg is not None %}
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              {#          <h5><i class="icon fas fa-check"></i> Alert!</h5>#}
+              {{ msg }}
+            </div>
+          {% endif %}
+
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Edit - Profile</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active">Profile</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-9">
+              <div class="card card-warning">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="fa fa-info-circle"></i> &nbsp;Company Information</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="name">Company Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Company Name"
+                           value="{{ company.name }}" name="name" id="name">
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" rows="3" name="description" id="description"
+                              placeholder="Enter ...">{{ company.description }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Website</label>
+                    <input type="text" class="form-control" id="webisteurl" name="websiteurl"
+                           placeholder="Website url"
+                           value="{{ company.websiteurl }}">
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-6">
+                      <label for="name">Contact Number 1</label>
+                      <input type="number" class="form-control" placeholder="contact number 1" id="contact1"
+                             name="contact1"
+                             value="{{ company.contactno1 }}">
+                    </div>
+                    <div class="form-group col-6">
+                      <label for="name">Company Number 2</label>
+                      <input type="number" class="form-control" id="contact2" name="contact2"
+                             placeholder="contact number 2"
+                             value="{{ company.contactno2 }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Address Line 1</label>
+                    <input type="text" class="form-control" id="address1" name="address1"
+                           placeholder="Address Line 1"
+                           value="{{ company.address1 }}">
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Address Line 2</label>
+                    <input type="text" class="form-control" id="address2" name="address2"
+                           placeholder="Address Line 2"
+                           value="{{ company.address2 }}">
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-3">
+                      <label for="name">City</label>
+                      <input type="text" class="form-control" id="city" name="city" placeholder="City"
+                             value="{{ company.city }}">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="name">State</label>
+                      <input type="text" class="form-control" id="state" name="state" placeholder="State"
+                             value="{{ company.state }}">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="name">Zipcode</label>
+                      <input type="number" class="form-control" id="zipcode" name="zipcode" placeholder="Zipcode"
+                             value="{{ company.zipcode }}">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="name">Country</label>
+                      <input type="text" class="form-control" id="country" name="country" placeholder="Country"
+                             value="{{ company.country }}">
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-right">Save Profile</button>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                <!-- /.card -->
+
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-3">
+              <!-- Profile Image -->
+              <div class="card card-warning card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    {% if user.pic.url is not None %}
+                      <img class="profile-user-img img-fluid img-circle" src="{{ user.pic.url }}" style="height: 50%"
+                           alt="User profile picture" id="wizardPicturePreview">
+                    {% else %}
+                      <img src="/media/no-image.png" class="img-circle elevation-2" alt="User Image" id="wizardPicturePreview"
+                           name="wizardPicturePreview">
+                    {% endif %}
+
+                  </div>
+
+                  <h3 class="profile-username text-center">
+                    {{ company.name }}
+                  </h3>
+                  <label class="btn btn-warning btn-block">
+                    Upload Logo<input type="file" hidden name="pic" id="pic">
+                  </label>
+
+
+                  <p class="text-muted text-center">
+                    {#                    {{ company.websiteurl }}#}
+                  </p>
+
+                  <p class="text-muted text-center">
+                    {#                    {{ company.account_user }}#}
+                  </p>
+                  <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                      <b>Email</b> <a class="float-right">{{ user.email }}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Website</b> <a class="float-right">{{ company.websiteurl }}</a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+    </div>
+
+  </form>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="/static/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- ChartJS -->
+  <script src="/static/assets/plugins/chart.js/Chart.min.js"></script>
+  <!-- Sparkline -->
+  <script src="/static/assets/plugins/sparklines/sparkline.js"></script>
+  <!-- JQVMap -->
+  <script src="/static/assets/plugins/jqvmap/jquery.vmap.min.js"></script>
+  <script src="/static/assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="/static/assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+  <!-- daterangepicker -->
+  <script src="/static/assets/plugins/moment/moment.min.js"></script>
+  <script src="/static/assets/plugins/daterangepicker/daterangepicker.js"></script>
+  <!-- Tempusdominus Bootstrap 4 -->
+  <script src="/static/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- Summernote -->
+  <script src="/static/assets/plugins/summernote/summernote-bs4.min.js"></script>
+  <!-- overlayScrollbars -->
+  <script src="/static/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.js"></script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <script src="/static/assets/js/pages/dashboard.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+
+  {% include 'companies/editprofilejs.html' %}
+
+{% endblock javascripts %}

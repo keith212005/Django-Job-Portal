@@ -1,0 +1,239 @@
+{% extends "layouts/base.html" %}
+
+
+{% block title %} Tables Data {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+  {% for company in company_info %}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Companies</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Companies</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-9">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Edit Company Information</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="card card-warning">
+                    <div class="card-header">
+                      <h3 class="card-title">{{ company.name }}</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="{% url 'activateOrDeactivate' id=company.account_user_id %}" type="post">
+                      <div class="card-body">
+                        <div class="form-group">
+                          <label for="name">Company Name</label>
+                          <input type="text" class="form-control" id="name" placeholder="Company Name"
+                                 value="{{ company.name }}" disabled>
+                        </div>
+                        <div class="form-group">
+                          <label for="description">Description</label>
+                          <textarea class="form-control" rows="3"
+                                    placeholder="Enter ..." disabled>{{ company.description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="name">Website</label>
+                          <input type="text" class="form-control" id="name" placeholder="Company Name"
+                                 value="{{ company.websiteurl }}" disabled>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="name">Contact Number 1</label>
+                            <input type="text" class="form-control" id="name" placeholder="Company Name"
+                                   value="{{ company.contactno1 }}" disabled>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="name">Company Number 2</label>
+                            <input type="text" class="form-control" id="name" placeholder="Company Name"
+                                   value="{{ company.contactno2 }}" disabled>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="name">Address Line 1</label>
+                          <input type="text" class="form-control" id="name" placeholder="Address Line 1"
+                                 value="{{ company.address1 }}" disabled>
+                        </div>
+                        <div class="form-group">
+                          <label for="name">Address Line 2</label>
+                          <input type="text" class="form-control" id="name" placeholder="Address Line 1"
+                                 value="{{ company.address2 }}" disabled>
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group col-3">
+                            <label for="name">City</label>
+                            <input type="text" class="form-control" id="name" placeholder="City"
+                                   value="{{ company.city }}" disabled>
+                          </div>
+                          <div class="form-group col-3">
+                            <label for="name">State</label>
+                            <input type="text" class="form-control" id="name" placeholder="State"
+                                   value="{{ company.state }}" disabled>
+                          </div>
+                          <div class="form-group col-3">
+                            <label for="name">Zipcode</label>
+                            <input type="text" class="form-control" id="name" placeholder="Zipcode"
+                                   value="{{ company.zipcode }}" disabled>
+                          </div>
+                          <div class="form-group col-3">
+                            <label for="name">Country</label>
+                            <input type="text" class="form-control" id="name" placeholder="Country"
+                                   value="{{ company.country }}" disabled>
+                          </div>
+
+                        </div>
+
+
+                      </div>
+                      <!-- /.card-body -->
+
+                      <div class="card-footer">
+{#                      {{ customuser.is_active }}#}
+                        {% if customuser.is_active == True %}
+                          <button type="submit" class="btn btn-danger float-right">Deactivate Profile</button>
+                        {% else %}
+                          <button type="submit" class="btn btn-success float-right">Activate Profile</button>
+                        {% endif %}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                <!-- /.card -->
+
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-3">
+              <!-- Profile Image -->
+              <div class="card card-warning card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle"
+                         src="/static/assets/img/user4-128x128.jpg"
+                         alt="User profile picture">
+                  </div>
+
+                  <h3 class="profile-username text-center">
+                    {{ company.name }}
+                  </h3>
+
+                  <p class="text-muted text-center">
+                    {{ company.websiteurl }}
+                  </p>
+
+                  <p class="text-muted text-center">
+                    {{ company.account_user }}
+                  </p>
+
+                  <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                      <b>Followers</b> <a class="float-right">1,322</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Following</b> <a class="float-right">543</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Friends</b> <a class="float-right">13,287</a>
+                    </li>
+                  </ul>
+
+                  <a href="#" class="btn btn-warning btn-block"><b>Follow</b></a>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+    </div>
+
+
+  {% endfor %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- DataTables -->
+  <script src="/static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="/static/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/static/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+  <!-- page script -->
+  <script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+      });
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
+
+{% endblock javascripts %}

@@ -1,0 +1,36 @@
+<script>
+
+  $(function () {
+    $("#edit-modal").modal('hide');
+  });
+
+  function getEducationData(ids) {
+    context = {'ids': ids}
+    $.ajax({
+      url: '{% url 'getSingleQualification' %}',
+      data: context,
+      type: 'GET',
+      contentType: "application/json",
+      dataType: "json",
+      success: function (queryset) {
+        showModalWithData(queryset)
+      },
+      error: function (xhr) {
+        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+      }
+
+    });
+  }
+
+  function showModalWithData(queryset) {
+    $("#edit_modal_id").val(queryset[0].pk);
+    $("#edit_modal_degree_name").val(queryset[0].fields.degree_name);
+    $("#edit_modal_institute_name").val(queryset[0].fields.institute_name);
+    $("#edit_modal_start_year").val(queryset[0].fields.start_year);
+    $("#edit_modal_end_year").val(queryset[0].fields.end_year);
+    $("#edit_modal_percentage").val(queryset[0].fields.percentage);
+    $("#edit_modal_description").val(queryset[0].fields.description);
+    $("#edit-modal").modal('show');
+  }
+
+</script>

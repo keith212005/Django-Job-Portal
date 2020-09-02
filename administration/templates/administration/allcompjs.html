@@ -1,0 +1,30 @@
+<script>
+ $(document).ready(function() {
+    var dt_table = $('#example1').dataTable({
+      order: [[0, "desc"]],
+      columnDefs: [
+        {targets: 0, data: 'id'},
+        {targets: 1, data: 'account_user_id',},
+        {targets: 2, data: 'name', searchable: true, },
+        {targets: 3, data: 'account_user', searchable: true,},
+        {targets: 4, data: 'contactno1', },
+        {targets: 5, data: 'contactno2', },
+        {
+          targets: 6,
+          orderable: false,
+          "render": function (data, type, row) {
+            return '<a href="../editCompany/' + row.id + '/' + row.account_user_id + '"><i class="fa fa-eye"></i></a>'
+          },
+        },
+      ],
+      pageLength: 25,
+      searching: true,
+      processing: true,
+      serverSide: true,
+      {#stateSave: true,#}
+      ajax: '{% url 'getAllCompaniesData' %}',
+    });
+
+  });
+
+</script>

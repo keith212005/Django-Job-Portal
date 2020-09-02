@@ -1,0 +1,3 @@
+This is my text file.
+
+Hello how are you

@@ -1,0 +1,315 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}">
+
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet"
+        href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/jqvmap/jqvmap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'assets/css/adminlte.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/daterangepicker/daterangepicker.css' %}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/summernote/summernote-bs4.min.css' %}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Show Update Form  -->
+  {% if obj is not None %}
+    <form action="{% url 'updateJob' obj.id %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Dashboard </h1>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="{% url 'companyDashboard' %}">Home</a></li>
+                  <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+          {% if msg is not None %}
+            {{ msg }}
+          {% endif %}
+          <div class="container">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="card card-warning">
+                  <div class="card-header">
+                    <h3>Post a New Job</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="name">Job Title </label>
+                      <input type="text" class="form-control" name="job_title" id="job_title"
+                             placeholder="Job title" value="{{ obj.job_title }}"
+                             required>
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Description</label>
+                      <textarea class="form-control" rows="2" name="job_description" id="job_description"
+                                placeholder=" Enter ..." required>{{ obj.job_description }}</textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="name">Job Skills</label>
+                      <textarea class="form-control" rows="2" name="job_skills" id="job_skills"
+                                placeholder=" Enter ...">{{ obj.job_skills }}</textarea>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label for="name">Job Type</label>
+                        <select class="form-control" name="job_type" id="job_type">
+                          {% if obj.job_type == 'Permanent' %}
+                            <option value="Temporary">Temporary</option>
+                            <option value="Permanent" selected>Permanent</option>
+                          {% else %}
+                            <option value="Temporary" selected>Temporary</option>
+                            <option value="Permanent">Permanent</option>
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="form-group col-6">
+                        <label for="name">City</label>
+                        <input type="text" class="form-control" name="job_city" id="job_city" placeholder="City"
+                               value="{{ obj.job_city }}">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label for="name">Salary</label>
+                        <input type="number" step="1.00" class="form-control" name="job_salary" id="job_salary"
+                               value="{{ obj.salary }}" placeholder="Salary">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label for="name">Start Date</label>
+                        <input type="date" class="form-control" name="start_date" id="start_date" value="{{ obj.start_date|date:"Y-m-d" }}"
+                               placeholder="Start date" required>
+                      </div>
+                      <div class="form-group col-6">
+                        <label for="name">End Date</label>
+                        <input type="date" class="form-control" name="end_date" id="end_date" value="{{ obj.end_date|date:"Y-m-d"  }}"
+                               placeholder="End date" required>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label for="name">Active</label><br>
+                        {% if obj.is_active == True %}
+                          <input type="checkbox" name="is_active" id="is_active" checked>
+                        {% else %}
+                          <input type="checkbox" name="is_active" id="is_active">
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+
+                  <div class="card-footer">
+                    <div class="form-group ">
+                      <button type="submit" class="btn btn-success float-right">Post Job</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+
+              </div>
+
+            </div>
+          </div>
+        </section>
+        <!-- /.content -->
+      </div>
+    </form>
+
+
+
+    {#***********************************************************************************************#}
+    <!-- Show Insert Form  -->
+  {% else %}
+    {#    show insert form  #}
+    <form action="{% url 'saveJob' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Post New Job </h1>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                  <li class="breadcrumb-item active">Post New Job</li>
+                </ol>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+          {% if msg is not None %}
+            {{ msg }}
+          {% endif %}
+          <div class="container">
+            <div class="row">
+              <div class="card card-body">
+                <div class="form-group">
+                  <label for="name">Job Title </label>
+                  <input type="text" class="form-control" name="job_title" id="job_title"
+                         placeholder="Job title"
+                         required>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea class="form-control" rows="2" name="job_description" id="job_description"
+                            placeholder=" Enter ..." required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="name">Job Skills</label>
+                  <textarea class="form-control" rows="2" name="job_skills" id="job_skills"
+                            placeholder=" Enter ..."></textarea>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">Job Type</label>
+                    <select class="form-control" name="job_type" id="job_type">
+                      <option value="Temporary">Temporary</option>
+                      <option value="Permanent">Permanent</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="name">City</label>
+                    <input type="text" class="form-control" name="job_city" id="job_city" placeholder="City">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">Salary</label>
+                    <input type="number" step="1.00" class="form-control" name="job_salary" id="job_salary"
+                           placeholder="Salary" required>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">Start Date</label>
+                    <input type="date" class="form-control" name="start_date" id="start_date"
+                           placeholder="Start date" required>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="name">End Date</label>
+                    <input type="date" class="form-control" name="end_date" id="end_date"
+                           placeholder="End date" required>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">Active</label><br>
+                    <input type="checkbox" name="is_active" id="is_active" checked>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="form-group ">
+                  <button type="submit" class="btn btn-success float-right">Post Job</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- /.content -->
+      </div>
+    </form>
+  {% endif %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+
+  <!-- jQuery -->
+  <script src="{% static '/assets/plugins/jquery/jquery.min.js' %}"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="{% static '/assets/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- ChartJS -->
+  <script src="{% static 'assets/plugins/chart.js/Chart.min.js' %}"></script>
+  <!-- Sparkline -->
+  <script src="{% static 'assets/plugins/sparklines/sparkline.js' %}"></script>
+  <!-- JQVMap -->
+  <script src="{% static 'assets/plugins/jqvmap/jquery.vmap.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/jqvmap/maps/jquery.vmap.usa.js' %}"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="{% static 'assets/plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+  <!-- daterangepicker -->
+  <script src="{% static 'assets/plugins/moment/moment.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
+  <!-- Tempusdominus Bootstrap 4 -->
+  <script src="{% static 'assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+  <!-- Summernote -->
+  <script src="{% static 'assets/plugins/summernote/summernote-bs4.min.js' %}"></script>
+  <!-- overlayScrollbars -->
+  <script src="{% static 'assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'assets/js/adminlte.js' %}"></script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <script src="{% static 'assets/js/pages/dashboard.js' %}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{% static 'assets/js/demo.js' %}"></script>
+
+
+  {% include "students/pageuserjs.html" %}
+
+{% endblock javascripts %}

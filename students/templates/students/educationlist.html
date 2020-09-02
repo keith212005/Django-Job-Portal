@@ -1,0 +1,341 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+
+{% block title %}Education Details {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'assets/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Education Details</h1>
+
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Education List</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card-cyan">
+              <div class="card-cyan">
+                <button type="button" class="btn btn-info  float-right" data-toggle="modal" data-target="#add-modal">
+                  <i class="fas fa-database"></i> Add Education
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <br>
+        {% for qualification in qualification_list %}
+          <div class="card card-outline card-cyan">
+            <div class="card-header ">
+              <h1 class="card-title">
+                <i class="fa fa-book"></i>
+                Qualifications
+              </h1>
+              <button type="button" class="btn btn-info btn-xs float-right"
+                      onclick="getEducationData({{ qualification.id }})">
+               <i class="fa fa-pen" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="card-body pt-0">
+              <div class="row">
+                <div class="col-7">
+                  {#                  <h2 class="lead"><b>Qualifications</b></h2>#}
+                  <table id="table">
+                    <tr hidden>
+                      <td>
+                        <b><i>Id :</i></b>
+                      </td>
+                      <td>
+                        &#8594;
+                      </td>
+                      <td class="text-muted">
+                        {{ qualification.id }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b><i>Degree Name :</i></b>
+                      </td>
+                      <td>&#8594;</td>
+                      <td class="text-muted">
+                        {{ qualification.degree_name }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b><i>Institute:</i> </b>
+                      </td>
+                      <td>
+                        &#8594;
+                      </td>
+                      <td class="text-muted">
+                        {{ qualification.institute_name }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b><i>Start Year : </i></b>
+                      </td>
+                      <td>
+                        &#8594;
+                      </td>
+                      <td class="text-muted">
+                        {{ qualification.start_year }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b><i>End Year :</i></b>
+                      </td>
+                      <td>
+                        &#8594;
+                      </td>
+                      <td class="text-muted">
+                        {{ qualification.end_year }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b><i>Percentage / CGPI:</i></b>
+                      </td>
+                      <td>
+                        &#8594;
+                      </td>
+                      <td class="text-muted">
+                        {{ qualification.percentage }} %
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b><i>Description : </i> </b>
+                      </td>
+                      <td>
+                        &#8594;
+                      </td>
+                      <td class="text-muted">
+                        {{ qualification.description }}
+                      </td>
+                    </tr>
+
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="text-right">
+                <div class="card-cyan">
+                  {#                  <button type="button" class="btn btn-info  float-right"#}
+                  {#                          onclick="getEducationData({{ qualification.id }})">#}
+                  {#                    <i class="fas fa-edit"></i> Edit Details#}
+                  {#                  </button>#}
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+    <!-- /.content -->
+
+    <!--Model Div [ADD MODAL] -->
+    <div class="modal fade" id="add-modal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Your Education Details</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="{% url 'addQualification' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+              <!--Form Tag-->
+
+
+              <div class="form-group">
+                <label for="name">Degree Name </label>
+                <input type="text" class="form-control" name="degree_name" id="degree_name"
+                       placeholder="Degree Name"
+                       value="{{ studenteducationdata.degree_name }}">
+              </div>
+              <div class="form-group">
+                <label for="name">Institute / School Name </label>
+                <input type="text" class="form-control" name="institute_name" id="institute_name"
+                       placeholder="Institute  Name"
+                       value="{{ studenteducationdata.institute_name }}">
+              </div>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="name">Start Year </label>
+                  <input type="date" class="form-control" name="start_year" id="start_year"
+                         value="{{ studenteducationdata.start_year }}">
+                </div>
+                <div class="form-group col-6">
+                  <label for="name">End Year </label>
+                  <input type="date" class="form-control" name="end_year" id="end_year"
+                         value="{{ studenteducationdata.end_year }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="description">Percentage / CGPI</label>
+                <input type="number" class="form-control" name="percentage" id="percentage"
+                       placeholder="Percentage"
+                       value="{{ studenteducationdata.percentage }}">
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" rows="3"
+                          placeholder="Enter ..." name="description"
+                          id="description">{{ studenteducationdata.description }}</textarea>
+              </div>
+
+
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+    <!--Model Div [EDIT MODAL] -->
+    <div class="modal fade" id="edit-modal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Here</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+
+
+            </button>
+          </div>
+          <form action="{% url 'updateSingleQualification' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+              <!--Form Tag-->
+              <div class="form-group" hidden>
+                <label for="name">ID</label>
+                <input type="text" class="form-control" name="edit_modal_id" id="edit_modal_id"
+                       placeholder="id">
+              </div>
+              <div class="form-group">
+                <label for="name">Degree Name </label>
+                <input type="text" class="form-control" name="edit_modal_degree_name" id="edit_modal_degree_name"
+                       placeholder="Degree Name">
+              </div>
+              <div class="form-group">
+                <label for="name">Institute / School Name </label>
+                <input type="text" class="form-control" name="edit_modal_institute_name" id="edit_modal_institute_name"
+                       placeholder="Institute  Name">
+              </div>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="name">Start Year </label>
+                  <input type="date" class="form-control" name="edit_modal_start_year" id="edit_modal_start_year"
+                  >
+                </div>
+                <div class="form-group col-6">
+                  <label for="name">End Year </label>
+                  <input type="date" class="form-control" name="edit_modal_end_year" id="edit_modal_end_year"
+                  >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="description">Percentage / CGPI</label>
+                <input type="number" class="form-control" name="edit_modal_percentage" id="edit_modal_percentage"
+                       placeholder="Percentage">
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" rows="3" placeholder="Enter ..." name="edit_modal_description"
+                          id="edit_modal_description"></textarea>
+              </div>
+
+
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="{% static 'assets/plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- DataTables -->
+  <script src="{% static 'assets/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'assets/js/adminlte.min.js' %}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{% static 'assets/js/demo.js' %}"></script>
+  <!-- page script -->
+
+  {% include 'students/educationlistjs.html' %}
+
+{% endblock javascripts %}
+

@@ -1,0 +1,291 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}">
+
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet"
+        href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/jqvmap/jqvmap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'assets/css/adminlte.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/daterangepicker/daterangepicker.css' %}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/summernote/summernote-bs4.min.css' %}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <form action="{% url 'updateProfile' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="content-wrapper">
+
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0 text-dark">Dashboard </h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard v1</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <section class="content">
+
+        {% if msg is not None %}
+          {{ msg }}
+        {% endif %}
+
+        {#      Make your form here#}
+        <div class="container">
+          <div class="row">
+
+            <div class="col-md-8">
+              <!-- general form elements -->
+              <div class="card-cyan">
+                <div class="card-header">
+                  <h3 class="card-title" align="center">Edit Your Profile</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">User Name</label>
+                    <input type="text" class="form-control" id="uname" name="username"
+                           value="{{ request.user.username }}"
+                           placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Email ID</label>
+                    <input type="text" class="form-control" id="email" name="lname" value="{{ request.user.email }}"
+                           placeholder="Email Id">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">First Name</label>
+                    <input type="text" class="form-control" id="fname" name="fname" value="{{ student_info.fname }}"
+                           placeholder="Enter First Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Last Name</label>
+                    <input type="text" class="form-control" id="lname" name="lname" value="{{ student_info.lname }}"
+                           placeholder="Enter Last Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Contact Number</label>
+                    <input type="text" class="form-control" id="contact" name="contact"
+                           value="{{ student_info.contact }}"
+                           placeholder="Enter Contact Number">
+                  </div>
+                  <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" class="form-control" name="dob" value="{{ student_info.dob|date:"Y-m-d" }}" required/>
+                  </div>
+                  <div class="form-group">
+                    <label>Recent address</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter Recent Address"
+                              name="address1">{{ student_info.address1 }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Zipcode</label>
+                    <input type="text" class="form-control" id="contact" name="zipcode"
+                           value="{{ student_info.zipcode }}"
+                           placeholder="Enter Zipcode">
+                  </div>
+                  <div class="form-group">
+                    <label>City</label>
+                    <select class="form-control select2" style="width: 100%; " name="city">
+                      <option>{{ student_info.city }}</option>
+                      <option>Ahmedabad</option>
+                      <option>Varodara</option>
+                      <option>Bhopal</option>
+                      <option>Bandra</option>
+                      <option>Pune</option>
+                      <option>Mumbai</option>
+                      <option>Surat</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>State</label>
+                    <select class="form-control select2" style="width: 100%;" name="state">
+                      <option>{{ student_info.state }}</option>
+                      <option>Gujarat</option>
+                      <option>Pune</option>
+                      <option>Maharashtra</option>
+                      <option>MP</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Country</label>
+                    <select class="form-control select2" style="width: 100%;" name="country">
+                      <option>{{ student_info.country }}</option>
+                      <option>India</option>
+                      <option>Us</option>
+                      <option>Uk</option>
+                      <option>Indonesia</option>
+                      <option>China</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Skills</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter Your Skills"
+                              name="skills">{{ student_info.skills }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Alternate Address</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter ..."
+                              name="address2">{{ student_info.address2 }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Summarize Yourself</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter Recent Address"
+                              name="description">{{ student_info.description }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <div>
+                      <label class="btn btn-default">
+                        Upload CV/Resume<input type="file" hidden id="upload_cv" name="upload_cv"
+                                               value="{{ student_info.upload_cv }}">
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+              <!-- /.card -->
+
+
+            </div>
+            <div class="col-md-4  img-circle">
+              <div class="card card-img-bottom card-cyan card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    {% if user.pic.url is not None %}
+                      <img class="profile-user-img img-fluid img-circle" style="width: 100px;" src="{{ user.pic.url }}"
+                           alt="User profile picture" id="wizardPicturePreview">
+                    {% else %}
+                      <img class="profile-user-img img-fluid img-circle" style="width: 100px;" src="/media/no-image.png"
+                           alt="User profile picture" id="wizardPicturePreview">
+                    {% endif %}
+                    <div>
+                      <label class="btn btn-group-toggle">
+                        Upload Click Here
+                        <input type="file" hidden name="file_pic" id="file_pic">
+                      </label>
+                    </div>
+                  </div>
+
+                  <h3 class="profile-username text-center">
+                    {{ request.user.username }}
+                  </h3>
+
+                  <p class="text-muted text-center">
+                    {{ request.user.email }}
+                  </p>
+
+                  <div class="form-group">
+                    <div style="text-align: center;">
+                      <i class='fas fa-star' style='font-size:25px;color:darkgoldenrod'></i>
+                      <label class="center-block"><h4><i>--About Me--</i></h4></label>
+                      <i class='fas fa-star' style='font-size:25px;color:darkgoldenrod'></i>
+
+                      <br>
+                      <h5><i><b><p>"{{ student_info.description }}"</p></b></i></h5>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /.content -->
+
+    </div>
+  </form>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+
+  <!-- jQuery -->
+  <script src="{% static '/assets/plugins/jquery/jquery.min.js' %}"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="{% static '/assets/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- ChartJS -->
+  <script src="{% static 'assets/plugins/chart.js/Chart.min.js' %}"></script>
+  <!-- Sparkline -->
+  <script src="{% static 'assets/plugins/sparklines/sparkline.js' %}"></script>
+  <!-- JQVMap -->
+  <script src="{% static 'assets/plugins/jqvmap/jquery.vmap.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/jqvmap/maps/jquery.vmap.usa.js' %}"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="{% static 'assets/plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+  <!-- daterangepicker -->
+  <script src="{% static 'assets/plugins/moment/moment.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
+  <!-- Tempusdominus Bootstrap 4 -->
+  <script src="{% static 'assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+  <!-- Summernote -->
+  <script src="{% static 'assets/plugins/summernote/summernote-bs4.min.js' %}"></script>
+  <!-- overlayScrollbars -->
+  <script src="{% static 'assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'assets/js/adminlte.js' %}"></script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <script src="{% static 'assets/js/pages/dashboard.js' %}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{% static 'assets/js/demo.js' %}"></script>
+
+
+  {% include "students/pageuserjs.html" %}
+
+{% endblock javascripts %}

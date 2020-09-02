@@ -1,0 +1,134 @@
+<script>
+
+
+  $(document).ready(function () {
+    var dt_table = $('#example1').dataTable({
+      pageLength: 25,
+      searching: true,
+      processing: true,
+      serverSide: true,
+      stateSave: true,
+      ajax: '{% url 'getAllJobsList' %}',
+      order: [[0, "desc"]],
+      dom:
+          "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'<'float-md-right ml-2'B>f>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      buttons: [{
+        'text': '<i class="fa fa-id-badge fa-fw" aria-hidden="true"></i>',
+        'action': function (e, dt, node) {
+
+          $(dt.table().node()).toggleClass('cards');
+          $('.fa', node).toggleClass(['fa-table', 'fa-id-badge']);
+
+          dt.draw('page');
+        },
+        'className': 'btn-sm',
+        'attr': {
+          'title': 'Change views',
+        }
+      }],
+      columnDefs: [
+
+        {targets: 0, data: 'id', visible: false},
+        {targets: 1, data: 'job_title',},
+        {
+          targets: 2,
+          data: 'job_type',
+          "render": function (data, type, row) {
+            if (row.job_type == 1) {
+              return 'Permanent'
+            } else {
+              return 'Temporary'
+            }
+          },
+        },
+        {targets: 3, data: 'job_city',},
+        {
+          targets: 4,
+          data: 'start_date',
+          "render": function (oObj) {
+            var javascriptDate = new Date(oObj);
+            javascriptDate = javascriptDate.getDate() + "/" + javascriptDate.getMonth() + "/" + javascriptDate.getFullYear();
+            return "<div class= date>" + javascriptDate + "<div>";
+          }
+        },
+        {
+          targets: 5,
+          data: 'end_date',
+          "render": function (oObj) {
+            var javascriptDate = new Date(oObj);
+            javascriptDate = javascriptDate.getDate() + "/" + javascriptDate.getMonth() + "/" + javascriptDate.getFullYear();
+            return "<div class= date>" + javascriptDate + "<div>";
+          }
+        },
+        {
+          targets: 6,
+          data: 'is_active',
+          className: "dt-center",
+          "render": function (data, type, row) {
+            if (row.is_active == 'True') {
+              return '<span class="badge badge-success">Active</span>'
+            } else {
+              return '<span class="badge badge-danger">Inactive</span>'
+            }
+          },
+        },
+        {
+          targets: 7,
+          orderable: false,
+          "render": function (data, type, row) {
+            return '<a href="../editJob/' + row.id + '"><i class="fa fa-edit"></i></a>'
+          },
+        },
+      ],
+
+
+      drawCallback: function (settings) {
+        var api = this.api();
+        var $table = $(api.table().node());
+
+        if ($table.hasClass('cards')) {
+
+          // Create an array of labels containing all table headers
+          var labels = [];
+          $('thead th', $table).each(function () {
+            labels.push($(this).text());
+          });
+
+          // Add data-label attribute to each cell
+          $('tbody tr', $table).each(function () {
+            $(this).find('td').each(function (column) {
+              $(this).attr('data-label', labels[column]);
+            });
+          });
+
+          var max = 0;
+          $('tbody tr', $table).each(function () {
+            max = Math.max($(this).height(), max);
+          }).height(max);
+
+        } else {
+          // Remove data-label attribute from each cell
+          $('tbody td', $table).each(function () {
+            $(this).removeAttr('data-label');
+          });
+
+          $('tbody tr', $table).each(function () {
+            $(this).height('auto');
+          });
+        }
+      }
+    })
+        .on('select', function (e, dt, type, indexes) {
+          alert('selectdddddddd');
+          var rowData = dt_table.rows(indexes).data().toArray()
+          $('#row-data').html(JSON.stringify(rowData));
+        })
+        .on('deselect', function () {
+          $('#row-data').empty();
+        })
+
+  });
+
+</script>

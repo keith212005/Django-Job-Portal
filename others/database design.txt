@@ -1,0 +1,150 @@
+================== Modules ========================================================
+account	- class(user)
+student - class(student_info, qualification, degree)
+company - class(company_info , jobposting)
+
+
+================================== DATABASE TABLES =======================================================
+account_user
+	-id (PK Auto) - Integer
+	-email - charfield(100)
+	-type - char(1) - (admin=A, company=C, student=S)
+	-password - charfield (100)
+	-date_joined - date()
+	-last_login - datetime()
+	-is_admin - boolean() # can manage companies/student data  (when user or company register admin=false)
+	-is_active - boolean() # if yes can login 
+
+student_info
+	-id (PK Auto) - Integer 
+	-account_user_id (FK account_user table) - Integer 
+	-student_qual_id (FK student_qualification table) - Integer 
+	-fname - charfield(200)
+	-lname - charfield(200)
+	-image - imageField()
+	-upload_cv (media pdf) - fileField()
+	-skills - textfield()  
+	-phoneno - charField()
+	-gender - boolean()
+	-dob - date()
+	-address line 1 - textField()
+	-address line 2 - textField()
+	-city - charField(50)
+	-state - charField(50)
+	-zipcode - Integer(6)
+	-country - charField(100)
+	-date_updated - datetime()
+	-date_deleted - datetime()
+
+
+qualification_details
+	-id(PK Auto) - Integer()
+	-account_user_id (FK account_user) - Integer()
+	-degree name - TextField()
+	-description - textField()
+	-university name - charField(100)
+	-start_year - datetime()
+	-end_year - datetime()
+	-percentage - float(2,2) 99.99
+
+
+	
+	
+Company_info
+	-id (PK Auto) - Integer()
+	-account_user_id (FK account_user) - Integer()
+	-name - charField(200)
+	-description - charField(400)
+	-contact number 1 - charField(10)
+	-contact number 2 - charField(10)
+	-website address - charField(400)
+	-logo (image) - imageField()
+	-address line 1 - textField()
+	-address line 2 - textField()
+	-city - charField(100)
+	-state - charField(100)
+	-zipcode - Integer(6)
+	-country - charField(100)
+	-date_updated - datetime()
+	-date_deleted - datetime()
+
+about_company
+	- id (PK Auto) - Integer()
+	-account_uder_id (FK - account_user) - Integer()
+	-estd   -  datetime()
+	-total_emps  -   Integer()
+	-about work  -   (software, hardwork, sale )  -textField()
+	-vision  - textField()
+	-Offering recruitment services  - client Services 
+
+	
+job_posting
+	-id (PK auto) - Integer()
+	-account_user_id (FK account_user) - Integer()
+	-job_title - charField(100)
+	-job_description - textField()
+	-job_skills - textField()
+	-job_type (permanent or temp) - charField(100)
+	-job_city (Delhi) - charField(100)
+	-is_active - boolean()
+	-date_created - datetime()
+	-date_updated - datetime()
+	-date_deleted - datetime()
+	-salary - integer()
+	
+
+job_post_activity
+	-id (PK Auto) - Integer()
+	job_id (FK - Job_posting table) - Integer()
+	student_id ( FK - student_info) - Integer()
+	apply_date - datatime()
+	
+
+
+	
+================ Candidate registration form =============================
+	- student name / company name
+	- email
+	- password
+	- dropdown (to select either student or company)
+
+	Rest information data will be updated later view profile page
+	-full name
+	-email
+	-pic
+	-university/institute name
+	-phoneno
+	-address line 1
+	-address line 2
+	-city
+	-state
+	-zipcode
+	-country
+
+	
+=========================FLOW ==================================
+Student - Dashbord-> Company post
+Edit profile
+Education
+Company apply
+View Resume'
+
+
+
+
+Company -Dashboard -
+	- Company Profile 
+	- All Posted Jobs
+	- About Company 
+
+	new table about comapany 
+		
+Student assign to post -(who were intrested to their Job) 
+Selected students  (select 2 )
+
+
+
+========================== NEW ADDITIONS ==========================================
+start_date and end_date (in jobposting table)
+	
+	

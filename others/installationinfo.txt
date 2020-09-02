@@ -1,0 +1,5 @@
+- pip install django-session-timeout
+- pip install python-dateutil
+- pip install psycopg2
+- pip install pillow
+

@@ -1,0 +1,177 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+
+{% block title %} Jobs List {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'assets/css/adminlte.min.css' %}">
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>About Company</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+              <li class="breadcrumb-item active">About Company</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+
+        {% if msg is not None %}
+          <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {#          <h5><i class="icon fas fa-check"></i> Alert!</h5>#}
+            {{ msg }}
+          </div>
+        {% endif %}
+
+        <div class="row">
+
+          <div class="col-md-3">
+            <div class="card card-warning">
+              <div class="card-header">
+                <h3>Logo</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="text-center">
+                  <img class="profile-user-img img-fluid img-bordered-sm"
+                       src="/static/assets/img/user4-128x128.jpg"
+                       alt="User profile picture">
+                  <hr>
+                  <label class="btn btn-warning btn-block">
+                    Upload Logo<input type="file" hidden name="pic" id="pic">
+                  </label>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+
+          <div class="col-md-9">
+            <div class="card card-warning card-outline">
+              <div class="card-header">
+                <h3 class="card-title">Company Information</h3>
+                <a class="btn btn-warning float-right"><i class="fa fa-pencil-alt"></i></a>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                {% for company in obj %}
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <strong><i class="fa fa-globe mr-1"></i> Company Name: &nbsp;&nbsp;</strong>
+                      <p class="text-muted">{{ company.account_user.name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <strong><i class="fas fa-mail-bulk mr-1"></i> Company Email</strong>
+                      <p class="text-muted">{{ company.account_user }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                      <p class="text-muted">Malibu, Californiassssss</p>
+                    </div>
+                    <div class="col-md-6">
+                      <strong><i class="fas fa-calendar-alt mr-1"></i>Established Date </strong>
+                      <p class="text-muted">{{ company.estd_date.date }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong><i class="fa fa-users mr-1"></i> Total Employees</strong>
+                      <p class="text-muted">{{ company.total_emps }}</p>
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong><i class="fa fa-info mr-1"></i> About</strong>
+                      <p class="text-muted">{{ company.about_work }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong><i class="fa fa-info-circle mr-1"></i> Vision</strong>
+                      <p class="text-muted">{{ company.vision }}</p>
+                    </div>
+                  </div>
+
+                {% endfor %}
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="{% static 'assets/plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- DataTables -->
+  <script src="{% static 'assets/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'assets/js/adminlte.min.js' %}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{% static 'assets/js/demo.js' %}"></script>
+  <!-- page script -->
+
+{% endblock javascripts %}
+
