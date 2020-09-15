@@ -56,7 +56,10 @@
 
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Edit - Profile</h1>
+              <h1>{{ jsonData.en }}</h1> - {{ jsonData.author }}
+{#              <h1>Edit - Profile</h1>#}
+              <button type="button" onclick="changeLanguage()">Toggle Language</button>
+
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">

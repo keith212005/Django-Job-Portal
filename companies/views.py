@@ -10,7 +10,8 @@ from authentication.models import CustomUser
 from companies.models import CompanyInfo, JobPosting, AboutCompany
 from django.core import serializers
 from PIL import Image
-
+import urllib.request
+import json
 
 # Create your views here.
 
@@ -30,7 +31,15 @@ def showAllJobListings(request):
 
 def editCompanyProfile(request, **kwargs):
   company = CompanyInfo.objects.get(account_user_id=request.user.id)
-  context = {'company': company}
+
+  url_eng = "https://programming-quotes-api.herokuapp.com/quotes/random";
+  # url_sr = "https://programming-quotes-api.herokuapp.com/quotes/random/lang/sr";
+  openurlen = urllib.request.urlopen(url_eng);
+  dataen = openurlen.read();
+  jsonDataen = json.loads(dataen);
+  print(jsonDataen);
+
+  context = {'company': company, 'jsonData': jsonDataen}
   return render(request, "companies/editprofile.html", context)
 
 
